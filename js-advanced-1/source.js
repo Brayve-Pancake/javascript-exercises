@@ -46,31 +46,46 @@ function addABookToLibrary(book) {
 
     let para = document.createElement("p");
     para.innerHTML = txt;
-    
+
     let delBtn = document.createElement("button");
+    delBtn.innerHTML = "DELETE";
     delBtn.id = "delBtn";
+    delBtn.addEventListener("click", removeCard);
 
     card.append(para);
     card.append(delBtn);
     document.querySelector(".container").append(card);
-
-    
-    console.log(myLibrary.length);
 }
+
+function removeCard(event) {
+  // get the card's data-index value
+  let index = event.target.parentElement.dataset.index;
+  // remove the card from display
+  let container = document.querySelector(`[data-index="${index}"]`);
+  container.remove();
+  // remove book from library using dataset value, which is set to it's index
+  myLibrary[index] = {};    
+};
 
 
 
 const newbookbtn = document.getElementById("newBook");
-newbookbtn.addEventListener("click", addNewBook);
-
-function addNewBook() {
+newbookbtn.addEventListener("click", () => {
   const form = document.getElementById('form');
   if (form.style.display === 'none') {
     form.style.display = 'block';
   } else {
     form.style.display = 'none';
   }
-}
+});
+
+// const delBtn = document.getElementById("delBtn");
+// delBtn.addEventListener("click", () => {
+//   // remove the card from display
+//   // document.querySelector("[data-index='0']").style.display = none;
+  
+//   // remove book from library using dataset value, which is set to it's index
+// });
 
 
 const submitBtn = document.getElementById("submit");
@@ -78,10 +93,12 @@ submitBtn.addEventListener("click", submitNewBook);
 
 function submitNewBook(event) {
   event.preventDefault(); // stops btn click submission
+  // get relevant info
   let title = document.getElementById("title").value
   let author = document.getElementById("author").value
   let numberOfPages = document.getElementById("number-of-pages").value
   let read = document.getElementById("read").value
+  // combine into object
   let book = new Book(title, author, numberOfPages, read)
   myLibrary.push(book);
   document.forms[0].reset();
