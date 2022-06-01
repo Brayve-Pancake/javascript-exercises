@@ -19,30 +19,7 @@ function Book(title, author, pages, read) {
   }
 }
 
-// TEMPORARY INITIALISED BOOKS FOR TESTING
-// const booka = new Book("a", "b", 4, "read");
-// const bookb = new Book("b", "c", 87, "read");
-// myLibrary.push(booka);
-// myLibrary.push(bookb);
-// console.log(myLibrary);
-// function addBookToLibrary() {
-//   for(let i = 0; i < myLibrary.length; i++) {
-//     // for each book in library, collate info
-//     let book = myLibrary[i];
-//     addABookToLibrary(book);
-//   }
-// }
-// addBookToLibrary();
-
-
 function addABookToLibrary(book) {
-  // let txt = "";
-  //   for (let property in book) {
-  //     if (property != "info") {
-  //       txt += book[property] + " ";
-  //     }
-  //   };
-    
     // create a card for each book
     let card = document.createElement("div");
     card.className = "card";
@@ -63,11 +40,16 @@ function addABookToLibrary(book) {
 
     card.append(para);
     card.append(delBtn);
+    card.append(readBtn);
     document.querySelector(".container").append(card);
 }
 
 function toggleRead(event) {
-  
+  let index = event.target.parentElement.dataset.index;
+  let book = myLibrary[index];
+  console.log(book.read);
+  book.read = !book.read;
+  console.log(book.read);
 }
 
 function removeCard(event) {
