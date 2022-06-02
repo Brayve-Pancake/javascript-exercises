@@ -1,5 +1,14 @@
-const body = document.querySelector("body");
-const button = document.createElement("button");
-button.innerHTML = "hello";
+const Gameboard = (() => {
+  const gameboard = [];
+})();
 
-body.append(button)
+
+
+const Players = (name, playerNumber) => {
+  const name = name;
+  const playerNumber = playerNumber;
+}
+
+const NewGame = (player) => {
+  
+}
