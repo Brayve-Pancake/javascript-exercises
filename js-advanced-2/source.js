@@ -1,6 +1,6 @@
 // playerFactory Factory Function creates a player object which has one property (symbol), defined when a Player is created
-const playerFactory = (symbol) => {
-    return {symbol};
+const playerFactory = (symbol, name) => {
+    return {symbol, name};
 };
 
 // Who's turn is it? Display to user.
@@ -15,8 +15,11 @@ const displayBoard = (symbol) => {
 // The code that runs each time a cell is clicked
 const Game = (round, _symbol) => {
   let symbol;
-  let pOne = playerFactory("O");
-  let pTwo = playerFactory("X");
+  let user1 = document.getElementById("user1").value;
+  let user2 = document.getElementById("user2").value;
+
+  let pOne = playerFactory("O", user1);
+  let pTwo = playerFactory("X", user2);
 
   // Select random player for round 0
   if (round == 0) {
@@ -33,7 +36,7 @@ const Game = (round, _symbol) => {
   // check if the player's new move has caused a win
   // if win, then display winner
 
-  return{symbol};
+  return{symbol, pOne, pTwo};
 };
 
 const Gameboard = (() => {
@@ -86,15 +89,15 @@ const Gameboard = (() => {
     let display = document.querySelector(".display");
     display.innerHTML = "";
     let para = document.createElement("p");
-    para.innerHTML = `${winner} wins the game!`
+    if(Game().pOne.symbol == winner) {
+      para.innerHTML = `${Game().pOne.name} wins the game`;
+    } else if (Game().pTwo.symbol == winner) {
+      para.innerHTML = `${Game().pTwo.name} wins the game`;
+    } else {
+      para.innerHTML = `${winner} wins the game!`;
+    }
     display.append(para);
   }
 
   return { playerSymbol,  }
 })();
-
-// Stage 5
-// when a player selects a card, 
-// record that on the gameboard using card id for index and store X or O
-// create potential winning combos
-// check if elements at winnin positions are O or X
