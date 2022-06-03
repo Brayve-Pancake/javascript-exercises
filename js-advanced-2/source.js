@@ -1,61 +1,52 @@
-  // playerFactory Factory Function creates a player object which has one property (symbol), defined when a Player is created
+// playerFactory Factory Function creates a player object which has one property (symbol), defined when a Player is created
 const playerFactory = (symbol) => {
-    const sayPlayerSymbol = () => console.log(`Player selected ${symbol}`);
-    return {symbol, sayPlayerSymbol};
+    return {symbol};
 };
 
+// Who's turn is it? Display to user.
 const displayBoard = (symbol) => {
-
-  // on run, have the gameboard add all event listeners
-  // for each valid card add event listner
-  // have that listener add the player's symbol
-  // remove the event listener from the card
-  
-  // Allow each cell to be clicked once
   let display = document.querySelector(".display");
   display.innerHTML = "";
   let para = document.createElement("p");
   para.innerHTML = `Player ${symbol}, make your move`
   display.append(para);
 };
-  
-let Game = (round, player) => {
-  let currentPlayer;
-  let playerOne = playerFactory("O");
-  let playerTwo = playerFactory("X");
 
+// The code that runs each time a cell is clicked
+const Game = (round, _symbol) => {
+  let symbol;
+  let pOne = playerFactory("O");
+  let pTwo = playerFactory("X");
+
+  // Select random player for round 0
   if (round == 0) {
     let randomNumberGen = Math.round(Math.random());
-    currentPlayer = randomNumberGen == 0? playerOne: playerTwo;
-    displayBoard(currentPlayer.symbol);
-    return{currentPlayer};
+    symbol = randomNumberGen == 0? pOne.symbol: pTwo.symbol;
+    displayBoard(symbol);
+    return{symbol};
   }
-
-  // for all following games:
-  // change player's turn
-  currentPlayer = player == playerOne? playerTwo: playerOne;
-
-
-
-  return{currentPlayer};
+  // Change player each round
+  symbol = _symbol == pOne.symbol? pTwo.symbol: pOne.symbol;
+  return{symbol};
 };
-
-
-
-
 
 const Gameboard = (() => {
   const gameboard = Array(9).fill("");
   let round = 0;
   let currentPlayer;
+  // could initialise pOne and pTwo here and link them back
 
-  results = Game(round, currentPlayer);
-  const playerSymbol = results.currentPlayer.symbol;
+  let results = Game(round, currentPlayer);
+  let playerSymbol = results.symbol;
+  console.log("playerSymbol: " + playerSymbol);
 
   const card = document.querySelectorAll(".card");
   card.forEach((x) => {x.addEventListener("click", placeCounter)});
   // Cannot be arrow because I need to removeEventListener
   function placeCounter() {
+    // click run's next instance of game
+    playerSymbol = Game(round, playerSymbol).symbol;
+
     const ticTac = document.createElement("p");
     ticTac.innerHTML = playerSymbol;
     this.append(ticTac);
@@ -65,9 +56,6 @@ const Gameboard = (() => {
     // console.log(playerSymbol);
     displayBoard(playerSymbol);
   }
-
-
   return { playerSymbol,  }
-
 })();
 
