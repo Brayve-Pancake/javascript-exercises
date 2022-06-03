@@ -27,6 +27,20 @@ const Game = (round, _symbol) => {
   }
   // Change player each round
   symbol = _symbol == pOne.symbol? pTwo.symbol: pOne.symbol;
+
+  // Play the game, player changes each time
+  // click a cell and the event logs the recorded player's move
+  // check if the player's new move has caused a win
+  // if win, then display winner
+
+
+
+
+
+
+
+
+
   return{symbol};
 };
 
@@ -34,6 +48,7 @@ const Gameboard = (() => {
   const gameboard = Array(9).fill("");
   let round = 0;
   let currentPlayer;
+  let winner;
   // could initialise pOne and pTwo here and link them back
 
   let results = Game(round, currentPlayer);
@@ -47,15 +62,36 @@ const Gameboard = (() => {
     // click run's next instance of game
     playerSymbol = Game(round, playerSymbol).symbol;
 
-    const ticTac = document.createElement("p");
-    ticTac.innerHTML = playerSymbol;
-    this.append(ticTac);
+    const selection = document.createElement("p");
+    selection.innerHTML = playerSymbol;
+    this.append(selection);
     this.removeEventListener("click", placeCounter);
     round++;
-    // console.log(round);
-    // console.log(playerSymbol);
+    // cards have id=card$$, use this to store card selection
+    let index = this.id.slice(this.id.length - 1) - 1
+    gameboard[index] = playerSymbol;
+    checkWinner(playerSymbol);
+    console.log(winner)
     displayBoard(playerSymbol);
   }
+
+  function checkWinner(playerSymbol) {
+    winningArrays = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6],]
+    winningArrays.forEach((subArray) => {
+      if (subArray.every((elIndex) => {
+        return gameboard[elIndex] == playerSymbol;
+      })) {
+        winner = playerSymbol;
+        return;
+      };
+    })
+  }
+
   return { playerSymbol,  }
 })();
 
+// Stage 5
+// when a player selects a card, 
+// record that on the gameboard using card id for index and store X or O
+// create potential winning combos
+// check if elements at winnin positions are O or X
