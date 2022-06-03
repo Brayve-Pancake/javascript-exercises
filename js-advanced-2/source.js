@@ -33,14 +33,6 @@ const Game = (round, _symbol) => {
   // check if the player's new move has caused a win
   // if win, then display winner
 
-
-
-
-
-
-
-
-
   return{symbol};
 };
 
@@ -55,8 +47,8 @@ const Gameboard = (() => {
   let playerSymbol = results.symbol;
   console.log("playerSymbol: " + playerSymbol);
 
-  const card = document.querySelectorAll(".card");
-  card.forEach((x) => {x.addEventListener("click", placeCounter)});
+  const cards = document.querySelectorAll(".card");
+  cards.forEach((x) => {x.addEventListener("click", placeCounter)});
   // Cannot be arrow because I need to removeEventListener
   function placeCounter() {
     // click run's next instance of game
@@ -70,21 +62,32 @@ const Gameboard = (() => {
     // cards have id=card$$, use this to store card selection
     let index = this.id.slice(this.id.length - 1) - 1
     gameboard[index] = playerSymbol;
-    checkWinner(playerSymbol);
-    console.log(winner)
     displayBoard(playerSymbol);
+    checkWinner(playerSymbol);
   }
+
 
   function checkWinner(playerSymbol) {
     winningArrays = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6],]
     winningArrays.forEach((subArray) => {
-      if (subArray.every((elIndex) => {
-        return gameboard[elIndex] == playerSymbol;
-      })) {
+      // if any sub array has all matching elements on gameboard announce winner
+      if (subArray.every((elIndex) => { return gameboard[elIndex] == playerSymbol;})) {
         winner = playerSymbol;
-        return;
+        cards.forEach((card) => {card.removeEventListener("click", placeCounter);});
+        displayWinner(winner);
       };
     })
+    if (!gameboard.includes("")) {
+      displayWinner("Draw, no one");
+    }
+  }
+
+  function displayWinner(winner) {
+    let display = document.querySelector(".display");
+    display.innerHTML = "";
+    let para = document.createElement("p");
+    para.innerHTML = `${winner} wins the game!`
+    display.append(para);
   }
 
   return { playerSymbol,  }
