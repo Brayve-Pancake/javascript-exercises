@@ -99,5 +99,18 @@ const Gameboard = (() => {
     display.append(para);
   }
 
+  // MOVED ON - CAN ADD BUTTON FUNCTIONALITY
+
+  // const btnRestart = document.querySelector("#btnRestart");
+  // btnRestart.addEventListener("click", refresh);
+  // // Cannot be arrow because I need to removeEventListener
+
+  // function refresh() {
+  //   // clear gameboard array
+  //   // set round = 0
+  //   // clear html of cards
+  //   // addeventListener to each card with the previous functionality
+  // }
+ 
   return { playerSymbol,  }
 })();
